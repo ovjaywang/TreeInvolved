@@ -10,6 +10,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<iostream>
+#include<set>
 #include <vector>
 //二叉查找树结点描述
 typedef int KeyType;
@@ -20,7 +21,7 @@ typedef struct TreeNode
 	struct TreeNode * right;  //右孩子指针
 	struct TreeNode * parent; //指向父节点指针
 }TreeNode, *PNode;
-vector<int> vv = vector<int>();
+
 //往二叉查找树中插入结点
 //插入的话，可能要改变根结点的地址，所以传的是二级指针
 void inseart(PNode * root, KeyType key)
@@ -212,20 +213,17 @@ void create(PNode* root, KeyType *keyArray, int length)
 		inseart(root, keyArray[i]);
 }
 
-void searchRange(int min, int max, TreeNode *root){
-	if (!root) return ;
+//查找范围内数据 同一数据算一个(不然，可以用vector加flag判断)
+set<KeyType> searchRange(KeyType min, KeyType max, set<KeyType> &vt, TreeNode *root){
+	if (!root) return vt ;
 	if (min < (root)->key)
-		searchRange(min, max, (root)->left);
+		searchRange(min, max, vt,(root)->left);
 	if (min < (root)->key && max >= (root)->key){
-		for each (double item in vv)
-		{
-			vv.push_back(item);
-		}
+		vt.insert(root->key);
 	}
 	if (min<(root)->key || max>(root)->key)
-		searchRange(min, max, (root)->right);
-
-	return ;
+		searchRange(min, max, vt,(root)->right);
+	return vt;
 }
 
 
@@ -254,11 +252,13 @@ int main(void)
 //	printf("%d\n", searchSuccessor(root)->key);
 	printf("%d\n", searchMin(root)->key);
 	printf("%d\n", searchMax(root)->key);
-	printf("%d\n", search(root, 2)->key);
-	searchRange(1, 4, root);
-	for each (double item in vv)
+	//printf("%d\n", search(root, 2)->key);
+	set<int> ss = set<int>();
+	ss = searchRange(1, 3, ss, root);
+	cout << "vv.size() "<<ss.size()<<endl;
+	for each (int item in ss)
 	{
-		printf("%d\n", item);
+		cout << item<<endl;
 	}
 	system("pause");
 	return 0;
