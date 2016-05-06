@@ -6,7 +6,6 @@
 采用类c语言的typedef模式
 *************************************************************************/
 
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<iostream>
@@ -216,13 +215,13 @@ void create(PNode* root, KeyType *keyArray, int length)
 //查找范围内数据 同一数据算一个(不然，可以用vector加flag判断)
 set<KeyType> searchRange(KeyType min, KeyType max, set<KeyType> &vt, TreeNode *root){
 	if (!root) return vt ;
-	if (min < (root)->key)
-		searchRange(min, max, vt,(root)->left);
-	if (min < (root)->key && max >= (root)->key){
+	if (min < root->key)
+		searchRange(min, max, vt,root->left);
+	if (min <= root->key && max >= root->key){
 		vt.insert(root->key);
 	}
-	if (min<(root)->key || max>(root)->key)
-		searchRange(min, max, vt,(root)->right);
+	if (max>root->key)
+		searchRange(min, max, vt,root->right);
 	return vt;
 }
 
@@ -254,11 +253,11 @@ int main(void)
 	printf("%d\n", searchMax(root)->key);
 	//printf("%d\n", search(root, 2)->key);
 	set<int> ss = set<int>();
-	ss = searchRange(1, 3, ss, root);
-	cout << "vv.size() "<<ss.size()<<endl;
+	ss = searchRange(0, 3, ss, root);
+	cout << "vv.size() "<<ss.size()<<endl<<"范围内包含节点有:"<<endl;
 	for each (int item in ss)
 	{
-		cout << item<<endl;
+		cout << item<<"	";
 	}
 	system("pause");
 	return 0;
